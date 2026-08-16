@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Loud.Technology.LiteLLM.Sdk</AssemblyName>
+    <RootNamespace>Loud.Technology.LiteLLM.Sdk</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet">
+    <PackageId>LiteLLM</PackageId>
+    <Title>LiteLLM .NET SDK</Title>
+    <Description>Modern, strongly typed .NET SDK for the LiteLLM AI Gateway, generated from the official LiteLLM OpenAPI specification with AutoSDK.</Description>
+    <PackageTags>litellm;ai;llm;gateway;openai;anthropic;gemini;bedrock;api;client;sdk;dotnet;openapi;autosdk</PackageTags>
+    <PackageProjectUrl>https://github.com/loud-technology/loud-technology-litellm-sdk</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/loud-technology/loud-technology-litellm-sdk.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,707 @@
+
+#nullable enable
+
+namespace Loud.Technology.LiteLLM.Sdk
+{
+    public partial class CustomerManagementClient
+    {
+
+
+        private static readonly global::Loud.Technology.LiteLLM.Sdk.EndPointSecurityRequirement s_NewEndUserCustomerNewPostSecurityRequirement0 =
+            new global::Loud.Technology.LiteLLM.Sdk.EndPointSecurityRequirement
+            {
+                Authorizations = new global::Loud.Technology.LiteLLM.Sdk.EndPointAuthorizationRequirement[]
+                {                    new global::Loud.Technology.LiteLLM.Sdk.EndPointAuthorizationRequirement
+                    {
+                        Type = "Http",
+                        SchemeId = "HttpBearer",
+                        Location = "Header",
+                        Name = "Bearer",
+                        FriendlyName = "Bearer",
+                    },
+                },
+            };
+        private static readonly global::Loud.Technology.LiteLLM.Sdk.EndPointSecurityRequirement[] s_NewEndUserCustomerNewPostSecurityRequirements =
+            new global::Loud.Technology.LiteLLM.Sdk.EndPointSecurityRequirement[]
+            {                s_NewEndUserCustomerNewPostSecurityRequirement0,
+            };
+        partial void PrepareNewEndUserCustomerNewPostArguments(
+            global::System.Net.Http.HttpClient httpClient,
+            global::Loud.Technology.LiteLLM.Sdk.NewCustomerRequest request);
+        partial void PrepareNewEndUserCustomerNewPostRequest(
+            global::System.Net.Http.HttpClient httpClient,
+            global::System.Net.Http.HttpRequestMessage httpRequestMessage,
+            global::Loud.Technology.LiteLLM.Sdk.NewCustomerRequest request);
+        partial void ProcessNewEndUserCustomerNewPostResponse(
+            global::System.Net.Http.HttpClient httpClient,
+            global::System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+        partial void ProcessNewEndUserCustomerNewPostResponseContent(
+            global::System.Net.Http.HttpClient httpClient,
+            global::System.Net.Http.HttpResponseMessage httpResponseMessage,
+            ref string content);
+
+        /// <summary>
+        /// New End User<br/>
+        /// Allow creating a new Customer <br/>
+        /// Parameters:<br/>
+        /// - user_id: str - The unique identifier for the user.<br/>
+        /// - alias: Optional[str] - A human-friendly alias for the user.<br/>
+        /// - blocked: bool - Flag to allow or disallow requests for this end-user. Default is False.<br/>
+        /// - max_budget: Optional[float] - The maximum budget allocated to the user. Either 'max_budget' or 'budget_id' should be provided, not both.<br/>
+        /// - budget_id: Optional[str] - The identifier for an existing budget allocated to the user. Either 'max_budget' or 'budget_id' should be provided, not both.<br/>
+        /// - allowed_model_region: Optional[Union[Literal["eu"], Literal["us"]]] - Require all user requests to use models in this specific region.<br/>
+        /// - default_model: Optional[str] - If no equivalent model in the allowed region, default all requests to this model.<br/>
+        /// - metadata: Optional[dict] = Metadata for customer, store information for customer. Example metadata = {"data_training_opt_out": True}<br/>
+        /// - budget_duration: Optional[str] - Budget is reset at the end of specified duration. If not set, budget is never reset. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d").<br/>
+        /// - tpm_limit: Optional[int] - [Not Implemented Yet] Specify tpm limit for a given customer (Tokens per minute)<br/>
+        /// - rpm_limit: Optional[int] - [Not Implemented Yet] Specify rpm limit for a given customer (Requests per minute)<br/>
+        /// - model_max_budget: Optional[dict] - [Not Implemented Yet] Specify max budget for a given model. Example: {"openai/gpt-4o-mini": {"max_budget": 100.0, "budget_duration": "1d"}}<br/>
+        /// - max_parallel_requests: Optional[int] - [Not Implemented Yet] Specify max parallel requests for a given customer.<br/>
+        /// - soft_budget: Optional[float] - [Not Implemented Yet] Get alerts when customer crosses given budget, doesn't block requests.<br/>
+        /// - spend: Optional[float] - Specify initial spend for a given customer.<br/>
+        /// - budget_reset_at: Optional[str] - Specify the date and time when the budget should be reset.<br/>
+        /// - object_permission: Optional[LiteLLM_ObjectPermissionBase] - Customer-specific object permissions to control access to resources.<br/>
+        ///     Supported fields:<br/>
+        ///     * mcp_servers: List[str] - List of allowed MCP server IDs<br/>
+        ///     * mcp_access_groups: List[str] - List of MCP access group names<br/>
+        ///     * mcp_tool_permissions: Dict[str, List[str]] - Map of server ID to allowed tool names (e.g., {"server_1": ["tool_a", "tool_b"]})<br/>
+        ///     * vector_stores: List[str] - List of allowed vector store IDs<br/>
+        ///     * agents: List[str] - List of allowed agent IDs<br/>
+        ///     * agent_access_groups: List[str] - List of agent access group names<br/>
+        ///     Example: {"mcp_servers": ["server_1", "server_2"], "vector_stores": ["vector_store_1"], "agents": ["agent_1"]}<br/>
+        ///     IF null or {} then no object-level restrictions apply.<br/>
+        /// - Allow specifying allowed regions <br/>
+        /// - Allow specifying default model<br/>
+        /// Example curl:<br/>
+        /// ```<br/>
+        /// curl --location 'http://0.0.0.0:4000/customer/new'         --header 'Authorization: Bearer sk-1234'         --header 'Content-Type: application/json'         --data '{<br/>
+        ///         "user_id" : "ishaan-jaff-3",<br/>
+        ///         "allowed_region": "eu",<br/>
+        ///         "budget_id": "free_tier",<br/>
+        ///         "default_model": "azure/gpt-3.5-turbo-eu"<br/>
+        ///     }'<br/>
+        /// # With object permissions<br/>
+        /// curl -L -X POST 'http://localhost:4000/customer/new'         -H 'Authorization: Bearer sk-1234'         -H 'Content-Type: application/json'         -d '{<br/>
+        ///         "user_id": "user_1",<br/>
+        ///         "object_permission": {<br/>
+        ///           "mcp_servers": ["server_1"],<br/>
+        ///           "mcp_access_groups": ["public_group"],<br/>
+        ///           "vector_stores": ["vector_store_1"]<br/>
+        ///         }<br/>
+        ///       }'<br/>
+        ///     # return end-user object<br/>
+        /// ```<br/>
+        /// NOTE: This used to be called `/end_user/new`, we will still be maintaining compatibility for /end_user/XXX for these endpoints
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Loud.Technology.LiteLLM.Sdk.ApiException"></exception>
+        public async global::System.Threading.Tasks.Task<global::Loud.Technology.LiteLLM.Sdk.CustomerResponse> NewEndUserCustomerNewPostAsync(
+
+            global::Loud.Technology.LiteLLM.Sdk.NewCustomerRequest request,
+            global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            var __response = await NewEndUserCustomerNewPostAsResponseAsync(
+
+                request: request,
+                requestOptions: requestOptions,
+                cancellationToken: cancellationToken
+            ).ConfigureAwait(false);
+
+            return __response.Body;
+        }
+        /// <summary>
+        /// New End User<br/>
+        /// Allow creating a new Customer <br/>
+        /// Parameters:<br/>
+        /// - user_id: str - The unique identifier for the user.<br/>
+        /// - alias: Optional[str] - A human-friendly alias for the user.<br/>
+        /// - blocked: bool - Flag to allow or disallow requests for this end-user. Default is False.<br/>
+        /// - max_budget: Optional[float] - The maximum budget allocated to the user. Either 'max_budget' or 'budget_id' should be provided, not both.<br/>
+        /// - budget_id: Optional[str] - The identifier for an existing budget allocated to the user. Either 'max_budget' or 'budget_id' should be provided, not both.<br/>
+        /// - allowed_model_region: Optional[Union[Literal["eu"], Literal["us"]]] - Require all user requests to use models in this specific region.<br/>
+        /// - default_model: Optional[str] - If no equivalent model in the allowed region, default all requests to this model.<br/>
+        /// - metadata: Optional[dict] = Metadata for customer, store information for customer. Example metadata = {"data_training_opt_out": True}<br/>
+        /// - budget_duration: Optional[str] - Budget is reset at the end of specified duration. If not set, budget is never reset. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d").<br/>
+        /// - tpm_limit: Optional[int] - [Not Implemented Yet] Specify tpm limit for a given customer (Tokens per minute)<br/>
+        /// - rpm_limit: Optional[int] - [Not Implemented Yet] Specify rpm limit for a given customer (Requests per minute)<br/>
+        /// - model_max_budget: Optional[dict] - [Not Implemented Yet] Specify max budget for a given model. Example: {"openai/gpt-4o-mini": {"max_budget": 100.0, "budget_duration": "1d"}}<br/>
+        /// - max_parallel_requests: Optional[int] - [Not Implemented Yet] Specify max parallel requests for a given customer.<br/>
+        /// - soft_budget: Optional[float] - [Not Implemented Yet] Get alerts when customer crosses given budget, doesn't block requests.<br/>
+        /// - spend: Optional[float] - Specify initial spend for a given customer.<br/>
+        /// - budget_reset_at: Optional[str] - Specify the date and time when the budget should be reset.<br/>
+        /// - object_permission: Optional[LiteLLM_ObjectPermissionBase] - Customer-specific object permissions to control access to resources.<br/>
+        ///     Supported fields:<br/>
+        ///     * mcp_servers: List[str] - List of allowed MCP server IDs<br/>
+        ///     * mcp_access_groups: List[str] - List of MCP access group names<br/>
+        ///     * mcp_tool_permissions: Dict[str, List[str]] - Map of server ID to allowed tool names (e.g., {"server_1": ["tool_a", "tool_b"]})<br/>
+        ///     * vector_stores: List[str] - List of allowed vector store IDs<br/>
+        ///     * agents: List[str] - List of allowed agent IDs<br/>
+        ///     * agent_access_groups: List[str] - List of agent access group names<br/>
+        ///     Example: {"mcp_servers": ["server_1", "server_2"], "vector_stores": ["vector_store_1"], "agents": ["agent_1"]}<br/>
+        ///     IF null or {} then no object-level restrictions apply.<br/>
+        /// - Allow specifying allowed regions <br/>
+        /// - Allow specifying default model<br/>
+        /// Example curl:<br/>
+        /// ```<br/>
+        /// curl --location 'http://0.0.0.0:4000/customer/new'         --header 'Authorization: Bearer sk-1234'         --header 'Content-Type: application/json'         --data '{<br/>
+        ///         "user_id" : "ishaan-jaff-3",<br/>
+        ///         "allowed_region": "eu",<br/>
+        ///         "budget_id": "free_tier",<br/>
+        ///         "default_model": "azure/gpt-3.5-turbo-eu"<br/>
+        ///     }'<br/>
+        /// # With object permissions<br/>
+        /// curl -L -X POST 'http://localhost:4000/customer/new'         -H 'Authorization: Bearer sk-1234'         -H 'Content-Type: application/json'         -d '{<br/>
+        ///         "user_id": "user_1",<br/>
+        ///         "object_permission": {<br/>
+        ///           "mcp_servers": ["server_1"],<br/>
+        ///           "mcp_access_groups": ["public_group"],<br/>
+        ///           "vector_stores": ["vector_store_1"]<br/>
+        ///         }<br/>
+        ///       }'<br/>
+        ///     # return end-user object<br/>
+        /// ```<br/>
+        /// NOTE: This used to be called `/end_user/new`, we will still be maintaining compatibility for /end_user/XXX for these endpoints
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::Loud.Technology.LiteLLM.Sdk.ApiException"></exception>
+        public async global::System.Threading.Tasks.Task<global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<global::Loud.Technology.LiteLLM.Sdk.CustomerResponse>> NewEndUserCustomerNewPostAsResponseAsync(
+
+            global::Loud.Technology.LiteLLM.Sdk.NewCustomerRequest request,
+            global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            request = request ?? throw new global::System.ArgumentNullException(nameof(request));
+
+            PrepareArguments(
+                client: HttpClient);
+            PrepareNewEndUserCustomerNewPostArguments(
+                httpClient: HttpClient,
+                request: request);
+
+
+            var __authorizations = global::Loud.Technology.LiteLLM.Sdk.EndPointSecurityResolver.ResolveAuthorizations(
+                availableAuthorizations: Authorizations,
+                securityRequirements: s_NewEndUserCustomerNewPostSecurityRequirements,
+                operationName: "NewEndUserCustomerNewPostAsync");
+
+            using var __timeoutCancellationTokenSource = global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.CreateTimeoutCancellationTokenSource(
+                clientOptions: Options,
+                requestOptions: requestOptions,
+                cancellationToken: cancellationToken);
+            var __effectiveCancellationToken = __timeoutCancellationTokenSource?.Token ?? cancellationToken;
+            var __effectiveReadResponseAsString = global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.GetReadResponseAsString(
+                clientOptions: Options,
+                requestOptions: requestOptions,
+                fallbackValue: ReadResponseAsString);
+            var __maxAttempts = global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.GetMaxAttempts(
+                clientOptions: Options,
+                requestOptions: requestOptions,
+                supportsRetry: true);
+
+            global::System.Net.Http.HttpRequestMessage __CreateHttpRequest()
+            {
+
+                            var __pathBuilder = new global::Loud.Technology.LiteLLM.Sdk.PathBuilder(
+                                path: "/customer/new",
+                                baseUri: HttpClient.BaseAddress);
+                            var __path = __pathBuilder.ToString();
+                __path = global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.AppendQueryParameters(
+                    path: __path,
+                    clientParameters: Options.QueryParameters,
+                    requestParameters: requestOptions?.QueryParameters);
+                var __httpRequest = new global::System.Net.Http.HttpRequestMessage(
+                    method: global::System.Net.Http.HttpMethod.Post,
+                    requestUri: new global::System.Uri(__path, global::System.UriKind.RelativeOrAbsolute));
+#if NET6_0_OR_GREATER
+                __httpRequest.Version = global::System.Net.HttpVersion.Version11;
+                __httpRequest.VersionPolicy = global::System.Net.Http.HttpVersionPolicy.RequestVersionOrHigher;
+#endif
+
+            foreach (var __authorization in __authorizations)
+            {
+                if (__authorization.Type == "Http" ||
+                    __authorization.Type == "OAuth2" ||
+                    __authorization.Type == "OpenIdConnect")
+                {
+                    __httpRequest.Headers.Authorization = new global::System.Net.Http.Headers.AuthenticationHeaderValue(
+                        scheme: __authorization.Name,
+                        parameter: __authorization.Value);
+                }
+                else if (__authorization.Type == "ApiKey" &&
+                         __authorization.Location == "Header")
+                {
+                    __httpRequest.Headers.Add(__authorization.Name, __authorization.Value);
+                } 
+            }
+                            var __httpRequestContentBody = request.ToJson(JsonSerializerContext);
+                            var __httpRequestContent = new global::System.Net.Http.StringContent(
+                                content: __httpRequestContentBody,
+                                encoding: global::System.Text.Encoding.UTF8,
+                                mediaType: "application/json");
+                            __httpRequest.Content = __httpRequestContent;
+                global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.ApplyHeaders(
+                    request: __httpRequest,
+                    clientHeaders: Options.Headers,
+                    requestHeaders: requestOptions?.Headers);
+
+                PrepareRequest(
+                    client: HttpClient,
+                    request: __httpRequest);
+                PrepareNewEndUserCustomerNewPostRequest(
+                    httpClient: HttpClient,
+                    httpRequestMessage: __httpRequest,
+                    request: request);
+
+                return __httpRequest;
+            }
+
+            global::System.Net.Http.HttpRequestMessage? __httpRequest = null;
+            global::System.Net.Http.HttpResponseMessage? __response = null;
+            var __attemptNumber = 0;
+            try
+            {
+                for (var __attempt = 1; __attempt <= __maxAttempts; __attempt++)
+                {
+                    __attemptNumber = __attempt;
+                    __httpRequest = __CreateHttpRequest();
+                    await global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.OnBeforeRequestAsync(
+                            clientOptions: Options,
+                            context: global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.CreateHookContext(
+                                operationId: "NewEndUserCustomerNewPost",
+                                methodName: "NewEndUserCustomerNewPostAsync",
+                                pathTemplate: "\"/customer/new\"",
+                                httpMethod: "POST",
+                                baseUri: BaseUri,
+                                request: __httpRequest!,
+                                response: null,
+                                exception: null,
+                                clientOptions: Options,
+                                requestOptions: requestOptions,
+                                attempt: __attempt,
+                                maxAttempts: __maxAttempts,
+                                willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
+                                cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
+                    try
+                    {
+                        __response = await HttpClient.SendAsync(
+                request: __httpRequest,
+                completionOption: global::System.Net.Http.HttpCompletionOption.ResponseContentRead,
+                cancellationToken: __effectiveCancellationToken).ConfigureAwait(false);
+                    }
+                    catch (global::System.Net.Http.HttpRequestException __exception)
+                    {
+                        var __retryDelay = global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.GetRetryDelay(
+                            clientOptions: Options,
+                            requestOptions: requestOptions,
+                            response: null,
+                            attempt: __attempt);
+                        var __willRetry = __attempt < __maxAttempts && !__effectiveCancellationToken.IsCancellationRequested;
+                        await global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.OnAfterErrorAsync(
+                            clientOptions: Options,
+                            context: global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.CreateHookContext(
+                                operationId: "NewEndUserCustomerNewPost",
+                                methodName: "NewEndUserCustomerNewPostAsync",
+                                pathTemplate: "\"/customer/new\"",
+                                httpMethod: "POST",
+                                baseUri: BaseUri,
+                                request: __httpRequest!,
+                                response: null,
+                                exception: __exception,
+                                clientOptions: Options,
+                                requestOptions: requestOptions,
+                                attempt: __attempt,
+                                maxAttempts: __maxAttempts,
+                                willRetry: __willRetry,
+                                retryDelay: __willRetry ? __retryDelay : (global::System.TimeSpan?)null,
+                                retryReason: "exception",
+                                cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
+                        if (!__willRetry)
+                        {
+                            throw;
+                        }
+
+                        __httpRequest.Dispose();
+                        __httpRequest = null;
+                        await global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.DelayBeforeRetryAsync(
+                            retryDelay: __retryDelay,
+                            cancellationToken: __effectiveCancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
+
+                    if (__response != null &&
+                        __attempt < __maxAttempts &&
+                        global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.ShouldRetryStatusCode(__response.StatusCode))
+                    {
+                        var __retryDelay = global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.GetRetryDelay(
+                            clientOptions: Options,
+                            requestOptions: requestOptions,
+                            response: __response,
+                            attempt: __attempt);
+                        await global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.OnAfterErrorAsync(
+                            clientOptions: Options,
+                            context: global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.CreateHookContext(
+                                operationId: "NewEndUserCustomerNewPost",
+                                methodName: "NewEndUserCustomerNewPostAsync",
+                                pathTemplate: "\"/customer/new\"",
+                                httpMethod: "POST",
+                                baseUri: BaseUri,
+                                request: __httpRequest!,
+                                response: __response,
+                                exception: null,
+                                clientOptions: Options,
+                                requestOptions: requestOptions,
+                                attempt: __attempt,
+                                maxAttempts: __maxAttempts,
+                                willRetry: true,
+                                retryDelay: __retryDelay,
+                                retryReason: "status:" + ((int)__response.StatusCode).ToString(global::System.Globalization.CultureInfo.InvariantCulture),
+                                cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
+                        __response.Dispose();
+                        __response = null;
+                        __httpRequest.Dispose();
+                        __httpRequest = null;
+                        await global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.DelayBeforeRetryAsync(
+                            retryDelay: __retryDelay,
+                            cancellationToken: __effectiveCancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
+
+                    break;
+                }
+
+                if (__response == null)
+                {
+                    throw new global::System.InvalidOperationException("No response received.");
+                }
+
+                using (__response)
+                {
+
+                ProcessResponse(
+                    client: HttpClient,
+                    response: __response);
+                ProcessNewEndUserCustomerNewPostResponse(
+                    httpClient: HttpClient,
+                    httpResponseMessage: __response);
+                if (__response.IsSuccessStatusCode)
+                {
+                    await global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.OnAfterSuccessAsync(
+                            clientOptions: Options,
+                            context: global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.CreateHookContext(
+                                operationId: "NewEndUserCustomerNewPost",
+                                methodName: "NewEndUserCustomerNewPostAsync",
+                                pathTemplate: "\"/customer/new\"",
+                                httpMethod: "POST",
+                                baseUri: BaseUri,
+                                request: __httpRequest!,
+                                response: __response,
+                                exception: null,
+                                clientOptions: Options,
+                                requestOptions: requestOptions,
+                                attempt: __attemptNumber,
+                                maxAttempts: __maxAttempts,
+                                willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
+                                cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
+                }
+                else
+                {
+                    await global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.OnAfterErrorAsync(
+                            clientOptions: Options,
+                            context: global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.CreateHookContext(
+                                operationId: "NewEndUserCustomerNewPost",
+                                methodName: "NewEndUserCustomerNewPostAsync",
+                                pathTemplate: "\"/customer/new\"",
+                                httpMethod: "POST",
+                                baseUri: BaseUri,
+                                request: __httpRequest!,
+                                response: __response,
+                                exception: null,
+                                clientOptions: Options,
+                                requestOptions: requestOptions,
+                                attempt: __attemptNumber,
+                                maxAttempts: __maxAttempts,
+                                willRetry: false,
+                                retryDelay: null,
+                                retryReason: global::System.String.Empty,
+                                cancellationToken: __effectiveCancellationToken)).ConfigureAwait(false);
+                }
+                            // Validation Error
+                            if ((int)__response.StatusCode == 422)
+                            {
+                                string? __content_422 = null;
+                                global::System.Exception? __exception_422 = null;
+                                global::Loud.Technology.LiteLLM.Sdk.HTTPValidationError? __value_422 = null;
+                                try
+                                {
+                                    if (__effectiveReadResponseAsString)
+                                    {
+                                        __content_422 = await __response.Content.ReadAsStringAsync(__effectiveCancellationToken).ConfigureAwait(false);
+                                        __value_422 = global::Loud.Technology.LiteLLM.Sdk.HTTPValidationError.FromJson(__content_422, JsonSerializerContext);
+                                    }
+                                    else
+                                    {
+                                        __content_422 = await __response.Content.ReadAsStringAsync(__effectiveCancellationToken).ConfigureAwait(false);
+
+                                        __value_422 = global::Loud.Technology.LiteLLM.Sdk.HTTPValidationError.FromJson(__content_422, JsonSerializerContext);
+                                    }
+                                }
+                                catch (global::System.Exception __ex)
+                                {
+                                    __exception_422 = __ex;
+                                }
+
+
+                                throw global::Loud.Technology.LiteLLM.Sdk.ApiException<global::Loud.Technology.LiteLLM.Sdk.HTTPValidationError>.Create(
+                                    statusCode: __response.StatusCode,
+                                    message: __content_422 ?? __response.ReasonPhrase ?? string.Empty,
+                                    innerException: __exception_422,
+                                    responseBody: __content_422,
+                                    responseObject: __value_422,
+                                    responseHeaders: global::System.Linq.Enumerable.ToDictionary(
+                                        __response.Headers,
+                                        h => h.Key,
+                                        h => h.Value));
+                            }
+
+                            if (__effectiveReadResponseAsString)
+                            {
+                                var __content = await __response.Content.ReadAsStringAsync(
+                #if NET5_0_OR_GREATER
+                                    __effectiveCancellationToken
+                #endif
+                                ).ConfigureAwait(false);
+
+                                ProcessResponseContent(
+                                    client: HttpClient,
+                                    response: __response,
+                                    content: ref __content);
+                                ProcessNewEndUserCustomerNewPostResponseContent(
+                                    httpClient: HttpClient,
+                                    httpResponseMessage: __response,
+                                    content: ref __content);
+
+                                try
+                                {
+                                    __response.EnsureSuccessStatusCode();
+
+                                    var __value = global::Loud.Technology.LiteLLM.Sdk.CustomerResponse.FromJson(__content, JsonSerializerContext) ??
+                                        throw new global::System.InvalidOperationException($"Response deserialization failed for \"{__content}\" ");
+                                    return new global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<global::Loud.Technology.LiteLLM.Sdk.CustomerResponse>(
+                                        statusCode: __response.StatusCode,
+                                        headers: global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse.CreateHeaders(__response),
+                                        requestUri: __response.RequestMessage?.RequestUri,
+                                        body: __value);
+                                }
+                                catch (global::System.Exception __ex)
+                                {
+                                    throw global::Loud.Technology.LiteLLM.Sdk.ApiException.Create(
+                                        statusCode: __response.StatusCode,
+                                        message: __content ?? __response.ReasonPhrase ?? string.Empty,
+                                        innerException: __ex,
+                                        responseBody: __content,
+                                        responseHeaders: global::System.Linq.Enumerable.ToDictionary(
+                                            __response.Headers,
+                                            h => h.Key,
+                                            h => h.Value));
+                                }
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    __response.EnsureSuccessStatusCode();
+                                    using var __content = await __response.Content.ReadAsStreamAsync(
+                #if NET5_0_OR_GREATER
+                                        __effectiveCancellationToken
+                #endif
+                                    ).ConfigureAwait(false);
+
+                                    var __value = await global::Loud.Technology.LiteLLM.Sdk.CustomerResponse.FromJsonStreamAsync(__content, JsonSerializerContext).ConfigureAwait(false) ??
+                                        throw new global::System.InvalidOperationException("Response deserialization failed.");
+                                    return new global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<global::Loud.Technology.LiteLLM.Sdk.CustomerResponse>(
+                                        statusCode: __response.StatusCode,
+                                        headers: global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse.CreateHeaders(__response),
+                                        requestUri: __response.RequestMessage?.RequestUri,
+                                        body: __value);
+                                }
+                                catch (global::System.Exception __ex)
+                                {
+                                    string? __content = null;
+                                    try
+                                    {
+                                        __content = await __response.Content.ReadAsStringAsync(
+                #if NET5_0_OR_GREATER
+                                            __effectiveCancellationToken
+                #endif
+                                        ).ConfigureAwait(false);
+                                    }
+                                    catch (global::System.Exception)
+                                    {
+                                    }
+
+                                    throw global::Loud.Technology.LiteLLM.Sdk.ApiException.Create(
+                                        statusCode: __response.StatusCode,
+                                        message: __content ?? __response.ReasonPhrase ?? string.Empty,
+                                        innerException: __ex,
+                                        responseBody: __content,
+                                        responseHeaders: global::System.Linq.Enumerable.ToDictionary(
+                                            __response.Headers,
+                                            h => h.Key,
+                                            h => h.Value));
+                                }
+                            }
+
+                }
+            }
+            finally
+            {
+                __httpRequest?.Dispose();
+            }
+        }
+        /// <summary>
+        /// New End User<br/>
+        /// Allow creating a new Customer <br/>
+        /// Parameters:<br/>
+        /// - user_id: str - The unique identifier for the user.<br/>
+        /// - alias: Optional[str] - A human-friendly alias for the user.<br/>
+        /// - blocked: bool - Flag to allow or disallow requests for this end-user. Default is False.<br/>
+        /// - max_budget: Optional[float] - The maximum budget allocated to the user. Either 'max_budget' or 'budget_id' should be provided, not both.<br/>
+        /// - budget_id: Optional[str] - The identifier for an existing budget allocated to the user. Either 'max_budget' or 'budget_id' should be provided, not both.<br/>
+        /// - allowed_model_region: Optional[Union[Literal["eu"], Literal["us"]]] - Require all user requests to use models in this specific region.<br/>
+        /// - default_model: Optional[str] - If no equivalent model in the allowed region, default all requests to this model.<br/>
+        /// - metadata: Optional[dict] = Metadata for customer, store information for customer. Example metadata = {"data_training_opt_out": True}<br/>
+        /// - budget_duration: Optional[str] - Budget is reset at the end of specified duration. If not set, budget is never reset. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d").<br/>
+        /// - tpm_limit: Optional[int] - [Not Implemented Yet] Specify tpm limit for a given customer (Tokens per minute)<br/>
+        /// - rpm_limit: Optional[int] - [Not Implemented Yet] Specify rpm limit for a given customer (Requests per minute)<br/>
+        /// - model_max_budget: Optional[dict] - [Not Implemented Yet] Specify max budget for a given model. Example: {"openai/gpt-4o-mini": {"max_budget": 100.0, "budget_duration": "1d"}}<br/>
+        /// - max_parallel_requests: Optional[int] - [Not Implemented Yet] Specify max parallel requests for a given customer.<br/>
+        /// - soft_budget: Optional[float] - [Not Implemented Yet] Get alerts when customer crosses given budget, doesn't block requests.<br/>
+        /// - spend: Optional[float] - Specify initial spend for a given customer.<br/>
+        /// - budget_reset_at: Optional[str] - Specify the date and time when the budget should be reset.<br/>
+        /// - object_permission: Optional[LiteLLM_ObjectPermissionBase] - Customer-specific object permissions to control access to resources.<br/>
+        ///     Supported fields:<br/>
+        ///     * mcp_servers: List[str] - List of allowed MCP server IDs<br/>
+        ///     * mcp_access_groups: List[str] - List of MCP access group names<br/>
+        ///     * mcp_tool_permissions: Dict[str, List[str]] - Map of server ID to allowed tool names (e.g., {"server_1": ["tool_a", "tool_b"]})<br/>
+        ///     * vector_stores: List[str] - List of allowed vector store IDs<br/>
+        ///     * agents: List[str] - List of allowed agent IDs<br/>
+        ///     * agent_access_groups: List[str] - List of agent access group names<br/>
+        ///     Example: {"mcp_servers": ["server_1", "server_2"], "vector_stores": ["vector_store_1"], "agents": ["agent_1"]}<br/>
+        ///     IF null or {} then no object-level restrictions apply.<br/>
+        /// - Allow specifying allowed regions <br/>
+        /// - Allow specifying default model<br/>
+        /// Example curl:<br/>
+        /// ```<br/>
+        /// curl --location 'http://0.0.0.0:4000/customer/new'         --header 'Authorization: Bearer sk-1234'         --header 'Content-Type: application/json'         --data '{<br/>
+        ///         "user_id" : "ishaan-jaff-3",<br/>
+        ///         "allowed_region": "eu",<br/>
+        ///         "budget_id": "free_tier",<br/>
+        ///         "default_model": "azure/gpt-3.5-turbo-eu"<br/>
+        ///     }'<br/>
+        /// # With object permissions<br/>
+        /// curl -L -X POST 'http://localhost:4000/customer/new'         -H 'Authorization: Bearer sk-1234'         -H 'Content-Type: application/json'         -d '{<br/>
+        ///         "user_id": "user_1",<br/>
+        ///         "object_permission": {<br/>
+        ///           "mcp_servers": ["server_1"],<br/>
+        ///           "mcp_access_groups": ["public_group"],<br/>
+        ///           "vector_stores": ["vector_store_1"]<br/>
+        ///         }<br/>
+        ///       }'<br/>
+        ///     # return end-user object<br/>
+        /// ```<br/>
+        /// NOTE: This used to be called `/end_user/new`, we will still be maintaining compatibility for /end_user/XXX for these endpoints
+        /// </summary>
+        /// <param name="budgetId"></param>
+        /// <param name="maxBudget">
+        /// Requests will fail if this budget (in USD) is exceeded.
+        /// </param>
+        /// <param name="softBudget">
+        /// Requests will NOT fail if this is exceeded. Will fire alerting though.
+        /// </param>
+        /// <param name="maxParallelRequests">
+        /// Max concurrent requests allowed for this budget id.
+        /// </param>
+        /// <param name="tpmLimit">
+        /// Max tokens per minute, allowed for this budget id.
+        /// </param>
+        /// <param name="rpmLimit">
+        /// Max requests per minute, allowed for this budget id.
+        /// </param>
+        /// <param name="budgetDuration">
+        /// Max duration budget should be set for (e.g. '1hr', '1d', '28d')
+        /// </param>
+        /// <param name="modelMaxBudget">
+        /// Max budget for each model (e.g. {'gpt-4o': {'max_budget': '0.0000001', 'budget_duration': '1d', 'tpm_limit': 1000, 'rpm_limit': 1000}})
+        /// </param>
+        /// <param name="budgetResetAt">
+        /// Datetime when the budget is reset
+        /// </param>
+        /// <param name="userId"></param>
+        /// <param name="alias"></param>
+        /// <param name="blocked">
+        /// Default Value: false
+        /// </param>
+        /// <param name="spend"></param>
+        /// <param name="allowedModelRegion"></param>
+        /// <param name="defaultModel"></param>
+        /// <param name="objectPermission"></param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::System.InvalidOperationException"></exception>
+        public async global::System.Threading.Tasks.Task<global::Loud.Technology.LiteLLM.Sdk.CustomerResponse> NewEndUserCustomerNewPostAsync(
+            string userId,
+            string? budgetId = default,
+            double? maxBudget = default,
+            double? softBudget = default,
+            int? maxParallelRequests = default,
+            int? tpmLimit = default,
+            int? rpmLimit = default,
+            string? budgetDuration = default,
+            global::System.Collections.Generic.Dictionary<string, global::Loud.Technology.LiteLLM.Sdk.BudgetConfig>? modelMaxBudget = default,
+            global::System.DateTime? budgetResetAt = default,
+            string? alias = default,
+            bool? blocked = default,
+            double? spend = default,
+            global::Loud.Technology.LiteLLM.Sdk.NewCustomerRequestAllowedModelRegion2? allowedModelRegion = default,
+            string? defaultModel = default,
+            global::Loud.Technology.LiteLLM.Sdk.LiteLLMObjectPermissionBase? objectPermission = default,
+            global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            var __request = new global::Loud.Technology.LiteLLM.Sdk.NewCustomerRequest
+            {
+                BudgetId = budgetId,
+                MaxBudget = maxBudget,
+                SoftBudget = softBudget,
+                MaxParallelRequests = maxParallelRequests,
+                TpmLimit = tpmLimit,
+                RpmLimit = rpmLimit,
+                BudgetDuration = budgetDuration,
+                ModelMaxBudget = modelMaxBudget,
+                BudgetResetAt = budgetResetAt,
+                UserId = userId,
+                Alias = alias,
+                Blocked = blocked,
+                Spend = spend,
+                AllowedModelRegion = allowedModelRegion,
+                DefaultModel = defaultModel,
+                ObjectPermission = objectPermission,
+            };
+
+            return await NewEndUserCustomerNewPostAsync(
+                request: __request,
+                requestOptions: requestOptions,
+                cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
+    }
+}

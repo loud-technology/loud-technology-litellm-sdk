@@ -1,0 +1,92 @@
+name: Build, test, and publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dotnet-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  CONFIGURATION: Release
+  SOLUTION: Loud.Technology.LiteLLM.Sdk.slnx
+  PROJECT: src/libs/LiteLLM/Loud.Technology.LiteLLM.Sdk.csproj
+
+jobs:
+  build-test-pack:
+    name: Build, test, and pack
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source and tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore "$SOLUTION"
+
+      - name: Build
+        run: dotnet build "$SOLUTION" --configuration "$CONFIGURATION" --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        run: dotnet test "$SOLUTION" --configuration "$CONFIGURATION" --no-build --logger GitHubActions
+
+      - name: Pack
+        run: dotnet pack "$PROJECT" --configuration "$CONFIGURATION" --no-build --output artifacts -p:ContinuousIntegrationBuild=true
+
+      - name: Upload NuGet artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: |
+            artifacts/*.nupkg
+            artifacts/*.snupkg
+          if-no-files-found: error
+
+  publish-nuget:
+    name: Publish to NuGet.org
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-test-pack
+    runs-on: ubuntu-latest
+    environment: nuget
+
+    steps:
+      - name: Download NuGet artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts
+
+      - name: Publish package and symbols
+        shell: bash
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [[ -z "${NUGET_API_KEY}" ]]; then
+            echo "NUGET_API_KEY repository secret is required for tagged releases." >&2
+            exit 1
+          fi
+
+          for package in artifacts/*.nupkg; do
+            [[ "${package}" == *.snupkg ]] && continue
+            dotnet nuget push "${package}" \
+              --api-key "${NUGET_API_KEY}" \
+              --source "https://api.nuget.org/v3/index.json" \
+              --skip-duplicate
+          done

@@ -1,0 +1,56 @@
+
+#nullable enable
+
+namespace Loud.Technology.LiteLLM.Sdk
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed partial class ChatCompletionImageObject
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <default>"image_url"</default>
+        [global::System.Text.Json.Serialization.JsonPropertyName("type")]
+        public string Type { get; set; } = "image_url";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("image_url")]
+        [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Loud.Technology.LiteLLM.Sdk.JsonConverters.AnyOfJsonConverter<string, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageUrlObject>))]
+        [global::System.Text.Json.Serialization.JsonRequired]
+        public required global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageUrlObject> ImageUrl { get; set; }
+
+        /// <summary>
+        /// Additional properties that are not explicitly defined in the schema
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonExtensionData]
+        public global::System.Collections.Generic.IDictionary<string, object> AdditionalProperties { get; set; } = new global::System.Collections.Generic.Dictionary<string, object>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChatCompletionImageObject" /> class.
+        /// </summary>
+        /// <param name="imageUrl"></param>
+        /// <param name="type"></param>
+#if NET7_0_OR_GREATER
+        [global::System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
+#endif
+        public ChatCompletionImageObject(
+            global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageUrlObject> imageUrl,
+            string type = "image_url")
+        {
+            this.Type = type;
+            this.ImageUrl = imageUrl;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChatCompletionImageObject" /> class.
+        /// </summary>
+        public ChatCompletionImageObject()
+        {
+        }
+
+    }
+}

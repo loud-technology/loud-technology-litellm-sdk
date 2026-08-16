@@ -1,0 +1,51 @@
+name: Update LiteLLM OpenAPI SDK
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    name: Regenerate SDK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source and tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Regenerate from the latest LiteLLM specification
+        working-directory: src/libs/LiteLLM
+        run: ./generate.sh
+
+      - name: Build generated SDK
+        run: dotnet build Loud.Technology.LiteLLM.Sdk.slnx --configuration Release
+
+      - name: Run tests
+        run: dotnet test Loud.Technology.LiteLLM.Sdk.slnx --configuration Release --no-build --logger GitHubActions
+
+      - name: Open update pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/update-litellm-openapi
+          delete-branch: true
+          commit-message: 'chore: update LiteLLM OpenAPI SDK'
+          title: 'chore: update LiteLLM OpenAPI SDK'
+          body: |
+            Automated regeneration from the latest LiteLLM OpenAPI specification.
+
+            - Generated with the pinned AutoSDK version from `generate.sh`
+            - Built and tested in Release configuration
+          labels: dependencies,automated
