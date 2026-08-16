@@ -24,11 +24,11 @@ The LiteLLM .NET SDK lets applications call the broad LiteLLM gateway API withou
 
     The committed client is reproducibly regenerated from LiteLLM's Swagger definition, reducing drift as the gateway evolves.
 
--   :material-package-variant:{ .lg .middle } **Ready for GitHub Packages**
+-   :material-package-variant:{ .lg .middle } **Published to two registries**
 
     ---
 
-    Release builds include semantic versions, Source Link, XML documentation, assembly signing, and GitHub Packages delivery.
+    One release artifact is delivered to NuGet.org with Trusted Publishing and to GitHub Packages with the workflow token.
 
 </div>
 
@@ -61,6 +61,7 @@ The default gateway URL is `http://localhost:4000`.
 ## Project links
 
 - [Source repository](https://github.com/loud-technology/loud-technology-litellm-sdk)
+- [NuGet.org package](https://www.nuget.org/packages/LiteLLM/)
 - [GitHub Packages](https://github.com/orgs/loud-technology/packages?repo_name=loud-technology-litellm-sdk)
 - [Issue tracker](https://github.com/loud-technology/loud-technology-litellm-sdk/issues)
 - [Official LiteLLM documentation](https://docs.litellm.ai/)

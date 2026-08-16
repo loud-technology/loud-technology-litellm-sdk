@@ -4,6 +4,7 @@
   <p><strong>One gateway. 100+ AI providers. A native, strongly typed .NET experience.</strong></p>
   <p>Build provider-independent AI products on LiteLLM with generated C# models, async APIs, source-generated JSON serialization, and an SDK that tracks the upstream OpenAPI surface.</p>
 
+  [![NuGet](https://img.shields.io/nuget/vpre/LiteLLM?logo=nuget&label=NuGet.org)](https://www.nuget.org/packages/LiteLLM/)
   [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-NuGet-181717?logo=github)](https://github.com/orgs/loud-technology/packages?repo_name=loud-technology-litellm-sdk)
   [![CI](https://github.com/loud-technology/loud-technology-litellm-sdk/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/loud-technology/loud-technology-litellm-sdk/actions/workflows/dotnet.yml)
   [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -34,9 +35,19 @@ LiteLLM turns OpenAI, Anthropic, Azure OpenAI, Amazon Bedrock, Google Gemini, Ve
 
 LiteLLM listens on `http://localhost:4000` by default.
 
-## Install from GitHub Packages
+## Install
 
-The SDK is published in NuGet format to the [loud-technology GitHub Packages registry](https://github.com/orgs/loud-technology/packages?repo_name=loud-technology-litellm-sdk). GitHub requires authentication to download NuGet packages.
+### NuGet.org
+
+Install directly from the public NuGet.org registry:
+
+```bash
+dotnet add package LiteLLM
+```
+
+### GitHub Packages
+
+The same package is also published to the [loud-technology GitHub Packages registry](https://github.com/orgs/loud-technology/packages?repo_name=loud-technology-litellm-sdk). GitHub requires authentication to download NuGet packages.
 
 Create a [personal access token (classic)](https://github.com/settings/tokens) with the `read:packages` scope, then register the source once:
 
@@ -50,16 +61,12 @@ dotnet nuget add source \
   --store-password-in-clear-text \
   --name loud-technology \
   "https://nuget.pkg.github.com/loud-technology/index.json"
-```
 
-Install the package:
-
-```bash
 dotnet add package LiteLLM \
   --source "https://nuget.pkg.github.com/loud-technology/index.json"
 ```
 
-Use a token limited to `read:packages`, never commit it, and authorize it for the organization if loud-technology enforces SAML SSO. On macOS and Linux, NuGet requires `--store-password-in-clear-text` for authenticated sources, so keep the user-level NuGet configuration private.
+Use a token limited to `read:packages`, never commit it, and authorize it for the organization if loud-technology enforces SAML SSO. On macOS and Linux, keep the user-level NuGet configuration private because authenticated sources require `--store-password-in-clear-text`.
 
 ## Quick start
 
@@ -216,7 +223,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-The CI workflow restores, builds, tests, and packs in `Release`. Version tags publish the `.nupkg` to the loud-technology GitHub Packages registry using the workflow `GITHUB_TOKEN`; no package secret is required. The `.snupkg` remains available in the workflow artifact. Untagged builds receive a development version and are retained as artifacts, not published.
+The CI workflow restores, builds, tests, and packs in `Release`. Version tags publish the same `.nupkg` to both NuGet.org and the loud-technology GitHub Packages registry. GitHub Packages uses the workflow `GITHUB_TOKEN`; NuGet.org uses Trusted Publishing to exchange a GitHub OIDC token for a short-lived API key, so no permanent package credential is stored. See [Release publishing](docs/guides/release-publishing.md) for the required NuGet.org policy and `NUGET_USER` variable. Untagged builds are retained as artifacts and are not published.
 
 ## Contributing
 
