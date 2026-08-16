@@ -50,7 +50,7 @@ jobs:
       - name: Pack
         run: dotnet pack "$PROJECT" --configuration "$CONFIGURATION" --no-build --output artifacts -p:ContinuousIntegrationBuild=true
 
-      - name: Upload NuGet artifacts
+      - name: Upload package artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
@@ -59,34 +59,48 @@ jobs:
             artifacts/*.snupkg
           if-no-files-found: error
 
-  publish-nuget:
-    name: Publish to NuGet.org
+  publish-github-packages:
+    name: Publish to GitHub Packages
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build-test-pack
     runs-on: ubuntu-latest
-    environment: nuget
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - name: Download NuGet artifacts
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download package artifacts
         uses: actions/download-artifact@v4
         with:
           name: nuget-packages
           path: artifacts
 
-      - name: Publish package and symbols
+      - name: Configure loud-technology GitHub Packages source
         shell: bash
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          GITHUB_PACKAGES_TOKEN: ${{ github.token }}
         run: |
-          if [[ -z "${NUGET_API_KEY}" ]]; then
-            echo "NUGET_API_KEY repository secret is required for tagged releases." >&2
-            exit 1
-          fi
+          dotnet nuget add source \
+            --username "${GITHUB_ACTOR}" \
+            --password "${GITHUB_PACKAGES_TOKEN}" \
+            --store-password-in-clear-text \
+            --name github-packages \
+            "https://nuget.pkg.github.com/${GITHUB_REPOSITORY_OWNER}/index.json"
 
+      - name: Publish package
+        shell: bash
+        env:
+          GITHUB_PACKAGES_TOKEN: ${{ github.token }}
+        run: |
           for package in artifacts/*.nupkg; do
             [[ "${package}" == *.snupkg ]] && continue
             dotnet nuget push "${package}" \
-              --api-key "${NUGET_API_KEY}" \
-              --source "https://api.nuget.org/v3/index.json" \
+              --api-key "${GITHUB_PACKAGES_TOKEN}" \
+              --source github-packages \
               --skip-duplicate
           done

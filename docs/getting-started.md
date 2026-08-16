@@ -12,15 +12,47 @@ http://localhost:4000
 
 Your gateway configuration determines which model names and aliases the application may use. The SDK does not store provider credentials; those remain behind LiteLLM.
 
-## 2. Install the package
+## 2. Install from GitHub Packages
 
-From your .NET project directory:
+The SDK is distributed as a NuGet package through the loud-technology GitHub Packages registry. GitHub requires authentication to download NuGet packages.
+
+Create a [personal access token (classic)](https://github.com/settings/tokens) with the `read:packages` scope, then register the source once on your development machine:
+
+=== "macOS and Linux"
+
+    ```bash
+    export GITHUB_PACKAGES_USER="your-github-username"
+    export GITHUB_PACKAGES_TOKEN="ghp_your-read-packages-token"
+
+    dotnet nuget add source \
+      --username "$GITHUB_PACKAGES_USER" \
+      --password "$GITHUB_PACKAGES_TOKEN" \
+      --store-password-in-clear-text \
+      --name loud-technology \
+      "https://nuget.pkg.github.com/loud-technology/index.json"
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    $env:GITHUB_PACKAGES_USER = "your-github-username"
+    $env:GITHUB_PACKAGES_TOKEN = "ghp_your-read-packages-token"
+
+    dotnet nuget add source `
+      --username $env:GITHUB_PACKAGES_USER `
+      --password $env:GITHUB_PACKAGES_TOKEN `
+      --store-password-in-clear-text `
+      --name loud-technology `
+      "https://nuget.pkg.github.com/loud-technology/index.json"
+    ```
+
+Install the package after registering the source:
 
 ```bash
-dotnet add package LiteLLM
+dotnet add package LiteLLM --source "https://nuget.pkg.github.com/loud-technology/index.json"
 ```
 
-The current SDK targets .NET 10.
+Use a token limited to `read:packages`, never commit it, and authorize it for the organization if loud-technology enforces SAML SSO. The current SDK targets .NET 10.
 
 ## 3. Configure credentials
 
