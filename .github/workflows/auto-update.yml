@@ -16,12 +16,12 @@ jobs:
 
     steps:
       - name: Check out source and tags
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
 
@@ -36,7 +36,7 @@ jobs:
         run: dotnet test Loud.Technology.LiteLLM.Sdk.slnx --configuration Release --no-build --logger GitHubActions
 
       - name: Open update pull request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: automation/update-litellm-openapi
