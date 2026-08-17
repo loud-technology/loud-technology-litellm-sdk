@@ -9,6 +9,8 @@ if ! command -v autosdk >/dev/null 2>&1; then
   dotnet tool install --global autosdk.cli --version "${AUTOSDK_VERSION}"
 fi
 
+python3 apply-openapi-overrides.py openapi.yaml
+
 rm -rf Generated
 
 autosdk generate openapi.yaml \

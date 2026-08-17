@@ -766,6 +766,10 @@ namespace Loud.Technology.LiteLLM.Sdk
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AccessGroupCreateRequest))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AccessGroupResponse))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AccessGroupUpdateRequest))]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.RerankRequest))]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.RerankResponse))]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.RerankResult>))]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.RerankResult))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.ChatCompletionOpenaiDeploymentsModelChatCompletionsPostRequest))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.ChatCompletionEnginesModelChatCompletionsPostRequest))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.ChatCompletionChatCompletionsPostRequest))]
@@ -1012,6 +1016,7 @@ namespace Loud.Technology.LiteLLM.Sdk
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.SCIMUserGroup>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.ChatMessage>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.ComplianceCheckResult>))]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.RerankResult>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.ModelGroupInfoProxy>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.AgentCard>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.MCPPublicServer>))]
@@ -1021,9 +1026,38 @@ namespace Loud.Technology.LiteLLM.Sdk
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.CustomerResponse>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.LiteLLMSpendLogs>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.LiteLLMProjectTable>))]
+    internal sealed partial class SourceGenerationContextChunk1 : global::System.Text.Json.Serialization.JsonSerializerContext
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Text.Json.Serialization.JsonSourceGenerationOptions(
+        DefaultIgnoreCondition = global::System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        Converters = new global::System.Type[]
+        {
+        })]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionUserMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAssistantMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionToolMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionSystemMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFunctionMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDeveloperMessage>>), TypeInfoPropertyName = "ChatCompletionDeveloperMessage_f1dc133f42dc341d")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionUserMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAssistantMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionToolMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionSystemMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFunctionMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDeveloperMessage>), TypeInfoPropertyName = "ChatCompletionDeveloperMessage_0d2e47265575f90a")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionRedactedThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject>>, object>), TypeInfoPropertyName = "ChatCompletionImageObject_object_4fd5fc8a151ae125")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionRedactedThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject>>), TypeInfoPropertyName = "ChatCompletionImageObject_c002fdddeb3616dd")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAudioObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDocumentObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionVideoObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFileObject>>>), TypeInfoPropertyName = "ChatCompletionFileObject_d03a3caa2498a71f")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAudioObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDocumentObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionVideoObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFileObject>>), TypeInfoPropertyName = "ChatCompletionFileObject_fb9ed6b1e95bee41")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAudioObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDocumentObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionVideoObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFileObject>), TypeInfoPropertyName = "ChatCompletionFileObject_69daca88dba0aa94")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.APIKeySecurityScheme, global::Loud.Technology.LiteLLM.Sdk.HTTPAuthSecurityScheme, global::Loud.Technology.LiteLLM.Sdk.OAuth2SecurityScheme, global::Loud.Technology.LiteLLM.Sdk.OpenIdConnectSecurityScheme, global::Loud.Technology.LiteLLM.Sdk.MutualTLSSecurityScheme>?), TypeInfoPropertyName = "MutualTLSSecurityScheme_8767f3b409198916")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionUserMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAssistantMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionToolMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionSystemMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFunctionMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDeveloperMessage>?), TypeInfoPropertyName = "ChatCompletionDeveloperMessage_5ef560dc90c59a9d")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionRedactedThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject>>, object>?), TypeInfoPropertyName = "ChatCompletionImageObject_object_6a053de4d6a40af3")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionRedactedThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject>?), TypeInfoPropertyName = "ChatCompletionImageObject_1bbb8d4df88bce3b")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::System.Collections.Generic.IList<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAudioObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDocumentObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionVideoObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFileObject>>>?), TypeInfoPropertyName = "ChatCompletionFileObject_7fe4395742a0101a")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAudioObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDocumentObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionVideoObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFileObject>?), TypeInfoPropertyName = "ChatCompletionFileObject_1c3cf8b0a2f96be0")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionUserMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAssistantMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionToolMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionSystemMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFunctionMessage, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDeveloperMessage>>), TypeInfoPropertyName = "ChatCompletionDeveloperMessage_a4b42d0a0b515a14")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionRedactedThinkingBlock, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject>>, object>), TypeInfoPropertyName = "ChatCompletionImageObject_object_69ac45812c1e6037")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::Loud.Technology.LiteLLM.Sdk.AnyOf<string, global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAudioObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDocumentObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionVideoObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFileObject>>>), TypeInfoPropertyName = "ChatCompletionFileObject_3866f0f68d36a590")]
+    [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.AnyOf<global::Loud.Technology.LiteLLM.Sdk.ChatCompletionTextObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionImageObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionAudioObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionDocumentObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionVideoObject, global::Loud.Technology.LiteLLM.Sdk.ChatCompletionFileObject>>), TypeInfoPropertyName = "ChatCompletionFileObject_a867e6b49561acc6")]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.AgentResponse>))]
     [global::System.Text.Json.Serialization.JsonSerializable(typeof(global::System.Collections.Generic.List<global::Loud.Technology.LiteLLM.Sdk.AccessGroupResponse>))]
-    internal sealed partial class SourceGenerationContextChunk1 : global::System.Text.Json.Serialization.JsonSerializerContext
+    internal sealed partial class SourceGenerationContextChunk2 : global::System.Text.Json.Serialization.JsonSerializerContext
     {
     }
     /// <summary>
@@ -2615,7 +2649,7 @@ namespace Loud.Technology.LiteLLM.Sdk
         private sealed class LazyChunkResolver : global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver
         {
             private readonly object _gate = new();
-            private readonly global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver?[] _resolvers = new global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver?[2];
+            private readonly global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver?[] _resolvers = new global::System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver?[3];
 
             public global::System.Text.Json.Serialization.Metadata.JsonTypeInfo? GetTypeInfo(
                 global::System.Type type,
@@ -2654,6 +2688,8 @@ namespace Loud.Technology.LiteLLM.Sdk
                     0 => new SourceGenerationContextChunk0(new global::System.Text.Json.JsonSerializerOptions()),
 
                     1 => new SourceGenerationContextChunk1(new global::System.Text.Json.JsonSerializerOptions()),
+
+                    2 => new SourceGenerationContextChunk2(new global::System.Text.Json.JsonSerializerOptions()),
                     _ => throw new global::System.ArgumentOutOfRangeException(nameof(index)),
                 };
             }

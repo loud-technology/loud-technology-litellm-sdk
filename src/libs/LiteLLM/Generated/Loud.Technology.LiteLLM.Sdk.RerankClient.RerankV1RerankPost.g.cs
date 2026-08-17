@@ -26,10 +26,12 @@ namespace Loud.Technology.LiteLLM.Sdk
             {                s_RerankV1RerankPostSecurityRequirement0,
             };
         partial void PrepareRerankV1RerankPostArguments(
-            global::System.Net.Http.HttpClient httpClient);
+            global::System.Net.Http.HttpClient httpClient,
+            global::Loud.Technology.LiteLLM.Sdk.RerankRequest request);
         partial void PrepareRerankV1RerankPostRequest(
             global::System.Net.Http.HttpClient httpClient,
-            global::System.Net.Http.HttpRequestMessage httpRequestMessage);
+            global::System.Net.Http.HttpRequestMessage httpRequestMessage,
+            global::Loud.Technology.LiteLLM.Sdk.RerankRequest request);
         partial void ProcessRerankV1RerankPostResponse(
             global::System.Net.Http.HttpClient httpClient,
             global::System.Net.Http.HttpResponseMessage httpResponseMessage);
@@ -42,14 +44,19 @@ namespace Loud.Technology.LiteLLM.Sdk
         /// <summary>
         /// Rerank
         /// </summary>
+        /// <param name="request"></param>
         /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Loud.Technology.LiteLLM.Sdk.ApiException"></exception>
-        public async global::System.Threading.Tasks.Task<string> RerankV1RerankPostAsync(
+        public async global::System.Threading.Tasks.Task<global::Loud.Technology.LiteLLM.Sdk.RerankResponse> RerankV1RerankPostAsync(
+
+            global::Loud.Technology.LiteLLM.Sdk.RerankRequest request,
             global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
             var __response = await RerankV1RerankPostAsResponseAsync(
+
+                request: request,
                 requestOptions: requestOptions,
                 cancellationToken: cancellationToken
             ).ConfigureAwait(false);
@@ -59,17 +66,23 @@ namespace Loud.Technology.LiteLLM.Sdk
         /// <summary>
         /// Rerank
         /// </summary>
+        /// <param name="request"></param>
         /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
         /// <param name="cancellationToken">The token to cancel the operation with</param>
         /// <exception cref="global::Loud.Technology.LiteLLM.Sdk.ApiException"></exception>
-        public async global::System.Threading.Tasks.Task<global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<string>> RerankV1RerankPostAsResponseAsync(
+        public async global::System.Threading.Tasks.Task<global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<global::Loud.Technology.LiteLLM.Sdk.RerankResponse>> RerankV1RerankPostAsResponseAsync(
+
+            global::Loud.Technology.LiteLLM.Sdk.RerankRequest request,
             global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptions? requestOptions = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
+            request = request ?? throw new global::System.ArgumentNullException(nameof(request));
+
             PrepareArguments(
                 client: HttpClient);
             PrepareRerankV1RerankPostArguments(
-                httpClient: HttpClient);
+                httpClient: HttpClient,
+                request: request);
 
 
             var __authorizations = global::Loud.Technology.LiteLLM.Sdk.EndPointSecurityResolver.ResolveAuthorizations(
@@ -126,6 +139,12 @@ namespace Loud.Technology.LiteLLM.Sdk
                     __httpRequest.Headers.Add(__authorization.Name, __authorization.Value);
                 } 
             }
+                            var __httpRequestContentBody = request.ToJson(JsonSerializerContext);
+                            var __httpRequestContent = new global::System.Net.Http.StringContent(
+                                content: __httpRequestContentBody,
+                                encoding: global::System.Text.Encoding.UTF8,
+                                mediaType: "application/json");
+                            __httpRequest.Content = __httpRequestContent;
                 global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptionsSupport.ApplyHeaders(
                     request: __httpRequest,
                     clientHeaders: Options.Headers,
@@ -136,7 +155,8 @@ namespace Loud.Technology.LiteLLM.Sdk
                     request: __httpRequest);
                 PrepareRerankV1RerankPostRequest(
                     httpClient: HttpClient,
-                    httpRequestMessage: __httpRequest);
+                    httpRequestMessage: __httpRequest,
+                    request: request);
 
                 return __httpRequest;
             }
@@ -337,11 +357,13 @@ namespace Loud.Technology.LiteLLM.Sdk
                                 {
                                     __response.EnsureSuccessStatusCode();
 
-                                    return new global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<string>(
+                                    var __value = global::Loud.Technology.LiteLLM.Sdk.RerankResponse.FromJson(__content, JsonSerializerContext) ??
+                                        throw new global::System.InvalidOperationException($"Response deserialization failed for \"{__content}\" ");
+                                    return new global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<global::Loud.Technology.LiteLLM.Sdk.RerankResponse>(
                                         statusCode: __response.StatusCode,
                                         headers: global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse.CreateHeaders(__response),
                                         requestUri: __response.RequestMessage?.RequestUri,
-                                        body: __content);
+                                        body: __value);
                                 }
                                 catch (global::System.Exception __ex)
                                 {
@@ -361,17 +383,19 @@ namespace Loud.Technology.LiteLLM.Sdk
                                 try
                                 {
                                     __response.EnsureSuccessStatusCode();
-                                    var __content = await __response.Content.ReadAsStringAsync(
+                                    using var __content = await __response.Content.ReadAsStreamAsync(
                 #if NET5_0_OR_GREATER
                                         __effectiveCancellationToken
                 #endif
                                     ).ConfigureAwait(false);
 
-                                    return new global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<string>(
+                                    var __value = await global::Loud.Technology.LiteLLM.Sdk.RerankResponse.FromJsonStreamAsync(__content, JsonSerializerContext).ConfigureAwait(false) ??
+                                        throw new global::System.InvalidOperationException("Response deserialization failed.");
+                                    return new global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse<global::Loud.Technology.LiteLLM.Sdk.RerankResponse>(
                                         statusCode: __response.StatusCode,
                                         headers: global::Loud.Technology.LiteLLM.Sdk.AutoSDKHttpResponse.CreateHeaders(__response),
                                         requestUri: __response.RequestMessage?.RequestUri,
-                                        body: __content);
+                                        body: __value);
                                 }
                                 catch (global::System.Exception __ex)
                                 {
@@ -406,6 +430,45 @@ namespace Loud.Technology.LiteLLM.Sdk
             {
                 __httpRequest?.Dispose();
             }
+        }
+        /// <summary>
+        /// Rerank
+        /// </summary>
+        /// <param name="model">
+        /// Reranking model or LiteLLM model alias.
+        /// </param>
+        /// <param name="query">
+        /// Query used to rank the documents.
+        /// </param>
+        /// <param name="documents">
+        /// Documents to rank against the query.
+        /// </param>
+        /// <param name="topN">
+        /// Maximum number of ranked results to return.
+        /// </param>
+        /// <param name="requestOptions">Per-request overrides such as headers, query parameters, timeout, retries, and response buffering.</param>
+        /// <param name="cancellationToken">The token to cancel the operation with</param>
+        /// <exception cref="global::System.InvalidOperationException"></exception>
+        public async global::System.Threading.Tasks.Task<global::Loud.Technology.LiteLLM.Sdk.RerankResponse> RerankV1RerankPostAsync(
+            string model,
+            string query,
+            global::System.Collections.Generic.IList<string> documents,
+            int topN,
+            global::Loud.Technology.LiteLLM.Sdk.AutoSDKRequestOptions? requestOptions = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            var __request = new global::Loud.Technology.LiteLLM.Sdk.RerankRequest
+            {
+                Model = model,
+                Query = query,
+                Documents = documents,
+                TopN = topN,
+            };
+
+            return await RerankV1RerankPostAsync(
+                request: __request,
+                requestOptions: requestOptions,
+                cancellationToken: cancellationToken).ConfigureAwait(false);
         }
     }
 }
