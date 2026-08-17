@@ -4,12 +4,16 @@ site_url: https://loud-technology.github.io/loud-technology-litellm-sdk/
 repo_url: https://github.com/loud-technology/loud-technology-litellm-sdk
 repo_name: loud-technology/loud-technology-litellm-sdk
 edit_uri: edit/main/docs/
+copyright: Copyright &copy; loud-technology. Released under the MIT License.
 
 nav:
   - Overview: index.md
   - Getting started: getting-started.md
   - Guides:
       - Client configuration: guides/configuration.md
+      - API surface: guides/api-surface.md
+      - Reliability and responses: guides/reliability.md
+      - Regenerate the SDK: guides/regeneration.md
       - Release publishing: guides/release-publishing.md
 # EXAMPLES:START
 # EXAMPLES:END
@@ -19,28 +23,41 @@ theme:
   language: en
   favicon: media/icon128.png
   logo: media/icon128.png
+  font: false
+  icon:
+    repo: fontawesome/brands/github
   features:
     - navigation.instant
+    - navigation.instant.progress
     - navigation.sections
+    - navigation.footer
     - navigation.top
+    - navigation.tracking
     - content.code.copy
+    - content.code.annotate
     - search.suggest
     - search.highlight
+    - search.share
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: deep purple
-      accent: purple
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: deep purple
-      accent: purple
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+    scheme: default
+    primary: black
+    accent: red
+
+extra_css:
+  - stylesheets/industrial.css
+
+extra_javascript:
+  - javascripts/motion.js
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/loud-technology/loud-technology-litellm-sdk
+      name: LiteLLM .NET SDK on GitHub
+    - icon: fontawesome/solid/cube
+      link: https://www.nuget.org/packages/LiteLLM/
+      name: LiteLLM package on NuGet.org
 
 plugins:
   - search
