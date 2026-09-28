@@ -1,0 +1,146 @@
+
+#nullable enable
+
+namespace Loud.Technology.LiteLLM.Sdk
+{
+    /// <summary>
+    /// Represents user-controllable params for a LiteLLM_BudgetTable record.<br/>
+    /// Budget-write paths use `model_fields.keys()` on this class as an allowlist<br/>
+    /// for user input. Keep server-managed fields (e.g. `budget_reset_at`) on<br/>
+    /// `LiteLLM_BudgetTableFull` so they aren't user-settable.
+    /// </summary>
+    public sealed partial class LiteLLMBudgetTable
+    {
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("budget_id")]
+        public string? BudgetId { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("soft_budget")]
+        public double? SoftBudget { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("max_budget")]
+        public double? MaxBudget { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("max_parallel_requests")]
+        public int? MaxParallelRequests { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("tpm_limit")]
+        public int? TpmLimit { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("rpm_limit")]
+        public int? RpmLimit { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("tpd_limit")]
+        public int? TpdLimit { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("model_max_budget")]
+        public object? ModelMaxBudget { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("budget_duration")]
+        public string? BudgetDuration { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("allowed_models")]
+        public global::System.Collections.Generic.IList<string>? AllowedModels { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("temp_budget_increase")]
+        public double? TempBudgetIncrease { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonPropertyName("temp_budget_expiry")]
+        public global::System.DateTime? TempBudgetExpiry { get; set; }
+
+        /// <summary>
+        /// Additional properties that are not explicitly defined in the schema
+        /// </summary>
+        [global::System.Text.Json.Serialization.JsonExtensionData]
+        public global::System.Collections.Generic.IDictionary<string, object> AdditionalProperties { get; set; } = new global::System.Collections.Generic.Dictionary<string, object>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiteLLMBudgetTable" /> class.
+        /// </summary>
+        /// <param name="budgetId"></param>
+        /// <param name="softBudget"></param>
+        /// <param name="maxBudget"></param>
+        /// <param name="maxParallelRequests"></param>
+        /// <param name="tpmLimit"></param>
+        /// <param name="rpmLimit"></param>
+        /// <param name="tpdLimit"></param>
+        /// <param name="modelMaxBudget"></param>
+        /// <param name="budgetDuration"></param>
+        /// <param name="allowedModels"></param>
+        /// <param name="tempBudgetIncrease"></param>
+        /// <param name="tempBudgetExpiry"></param>
+#if NET7_0_OR_GREATER
+        [global::System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
+#endif
+        public LiteLLMBudgetTable(
+            string? budgetId,
+            double? softBudget,
+            double? maxBudget,
+            int? maxParallelRequests,
+            int? tpmLimit,
+            int? rpmLimit,
+            int? tpdLimit,
+            object? modelMaxBudget,
+            string? budgetDuration,
+            global::System.Collections.Generic.IList<string>? allowedModels,
+            double? tempBudgetIncrease,
+            global::System.DateTime? tempBudgetExpiry)
+        {
+            this.BudgetId = budgetId;
+            this.SoftBudget = softBudget;
+            this.MaxBudget = maxBudget;
+            this.MaxParallelRequests = maxParallelRequests;
+            this.TpmLimit = tpmLimit;
+            this.RpmLimit = rpmLimit;
+            this.TpdLimit = tpdLimit;
+            this.ModelMaxBudget = modelMaxBudget;
+            this.BudgetDuration = budgetDuration;
+            this.AllowedModels = allowedModels;
+            this.TempBudgetIncrease = tempBudgetIncrease;
+            this.TempBudgetExpiry = tempBudgetExpiry;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiteLLMBudgetTable" /> class.
+        /// </summary>
+        public LiteLLMBudgetTable()
+        {
+        }
+
+    }
+}
