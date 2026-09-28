@@ -184,7 +184,7 @@ catch (ApiException exception)
 The project follows AutoSDK's [First SDK](https://autosdk.net/docs/getting-started/first-sdk) layout. `generate.sh` is the single source of truth for generation.
 
 ```bash
-dotnet tool install --global autosdk.cli --version 0.30.2-dev.152
+dotnet tool install --global autosdk.cli --version 0.34.6
 cd src/libs/LiteLLM
 ./generate.sh
 ```
@@ -205,6 +205,30 @@ Loud.Technology.LiteLLM.Sdk.slnx
 ```
 
 ## Build and test
+
+## Preview the documentation
+
+Build and open the MkDocs site without blocking the terminal:
+
+```bash
+./scripts/docs-preview.sh open
+```
+
+Open a specific guide or generate reviewable PNG renders:
+
+```bash
+./scripts/docs-preview.sh open guides/api-surface/
+./scripts/docs-preview.sh render
+```
+
+The preview runs at `http://127.0.0.1:8123`. Renders are written to `artifacts/docs-preview/`, which is ignored by Git. Inspect or stop the background server with:
+
+```bash
+./scripts/docs-preview.sh status
+./scripts/docs-preview.sh stop
+```
+
+Run the full deterministic documentation audit separately with `./scripts/validate-docs.sh`.
 
 ```bash
 dotnet restore Loud.Technology.LiteLLM.Sdk.slnx

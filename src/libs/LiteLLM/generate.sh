@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly AUTOSDK_VERSION="0.30.2-dev.152"
+readonly AUTOSDK_VERSION="0.34.6"
 readonly OPENAPI_URL="https://litellm-api.up.railway.app/openapi.json"
 readonly DEFAULT_BASE_URL="http://localhost:4000"
 
-if ! command -v autosdk >/dev/null 2>&1; then
-  dotnet tool install --global autosdk.cli --version "${AUTOSDK_VERSION}"
+installed_version="$(autosdk --version 2>/dev/null || true)"
+
+if [[ "${installed_version%%+*}" != "${AUTOSDK_VERSION}" ]]; then
+  dotnet tool update --global autosdk.cli --version "${AUTOSDK_VERSION}" --allow-downgrade
 fi
 
 python3 apply-openapi-overrides.py openapi.yaml

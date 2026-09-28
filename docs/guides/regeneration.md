@@ -10,13 +10,13 @@ The repository follows AutoSDK's First SDK layout. `src/libs/LiteLLM/generate.sh
 ## Prerequisites
 
 - .NET 10 SDK or later
-- AutoSDK CLI version `0.30.2-dev.152`
+- AutoSDK CLI version `0.34.6`
 - Network access to retrieve LiteLLM's published Swagger document
 
 Install the pinned generator version:
 
 ```bash
-dotnet tool install --global autosdk.cli --version 0.30.2-dev.152
+dotnet tool install --global autosdk.cli --version 0.34.6
 ```
 
 ## Run generation

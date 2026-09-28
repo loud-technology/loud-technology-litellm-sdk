@@ -110,6 +110,120 @@ public sealed class ClientTests
         response.Results[1].EffectiveScore.Should().Be(0.42);
     }
 
+    [TestMethod]
+    public async Task TypeSafeSystemOne_SendsTypedQuestionsAndReturnsTypedAnswers()
+    {
+        var handler = new RecordingHandler(
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(
+                    """
+                    {
+                      "model": "jev-1.13.0",
+                      "answers": {
+                        "department": {
+                          "type": "choice",
+                          "choice": "technical",
+                          "probabilities": { "billing": 0.08, "technical": 0.85, "sales": 0.07 },
+                          "confidence": 0.82
+                        },
+                        "urgency": {
+                          "type": "score",
+                          "score": 1.7,
+                          "legend": { "0": "low", "1": "medium", "2": "high" },
+                          "probabilities": { "0": 0.05, "1": 0.2, "2": 0.75 },
+                          "confidence": 0.7
+                        },
+                        "is_complaint": { "type": "noul", "noul": 0.95 }
+                      },
+                      "usage": { "input_tokens": 312, "output_tokens": 48 }
+                    }
+                    """,
+                    Encoding.UTF8,
+                    "application/json"),
+            });
+        using var httpClient = new HttpClient(handler);
+        using var client = new LiteLLMClient(
+            apiKey: "test-api-key",
+            httpClient: httpClient,
+            baseUri: new Uri("https://proxy.example.com"),
+            disposeHttpClient: false);
+
+        var response = await client.TypeSafe.SystemOneAsync(
+            new TypeSafeSystemOneRequest
+            {
+                State = "Help! My payouts have been failing for 3 days.",
+                Model = "jev-latest",
+                Questions = new()
+                {
+                    ["department"] = TypeSafeQuestion.Choice(
+                        "Which team should handle this?",
+                        new Dictionary<string, string?>
+                        {
+                            ["billing"] = "Payments, invoicing, refunds",
+                            ["technical"] = "Bugs, outages, integrations",
+                            ["sales"] = null,
+                        }),
+                    ["urgency"] = TypeSafeQuestion.Score("How urgent is this?", "low", "medium", "high"),
+                    ["is_complaint"] = TypeSafeQuestion.Noul("Is the customer complaining?"),
+                },
+            });
+
+        handler.Method.Should().Be(HttpMethod.Post);
+        handler.RequestUri.Should().Be(new Uri("https://proxy.example.com/typesafe/v1/systemone"));
+        handler.Authorization.Should().Be(new AuthenticationHeaderValue("Bearer", "test-api-key"));
+
+        using var body = JsonDocument.Parse(handler.Body!);
+        var root = body.RootElement;
+        root.GetProperty("state").GetString().Should().Be("Help! My payouts have been failing for 3 days.");
+        root.GetProperty("model").GetString().Should().Be("jev-latest");
+        var questions = root.GetProperty("questions");
+        var department = questions.GetProperty("department");
+        department.GetProperty("type").GetString().Should().Be("choice");
+        department.GetProperty("criteria").GetProperty("technical").GetString().Should().Be("Bugs, outages, integrations");
+        department.GetProperty("criteria").GetProperty("sales").ValueKind.Should().Be(JsonValueKind.Null);
+        var urgency = questions.GetProperty("urgency");
+        urgency.GetProperty("type").GetString().Should().Be("score");
+        urgency.GetProperty("criteria").GetArrayLength().Should().Be(3);
+        var isComplaint = questions.GetProperty("is_complaint");
+        isComplaint.GetProperty("type").GetString().Should().Be("noul");
+        isComplaint.TryGetProperty("criteria", out _).Should().BeFalse();
+
+        response.Model.Should().Be("jev-1.13.0");
+        var choice = response.Answers["department"];
+        choice.Type.Should().Be(TypeSafeAnswerType.Choice);
+        choice.Choice.Should().Be("technical");
+        choice.Probabilities.Should().ContainKey("technical").WhoseValue.Should().Be(0.85);
+        choice.Confidence.Should().Be(0.82);
+        var score = response.Answers["urgency"];
+        score.Type.Should().Be(TypeSafeAnswerType.Score);
+        score.Score.Should().Be(1.7);
+        score.Legend.Should().ContainKey("2").WhoseValue.Should().Be("high");
+        var noul = response.Answers["is_complaint"];
+        noul.Type.Should().Be(TypeSafeAnswerType.Noul);
+        noul.Noul.Should().Be(0.95);
+        response.Usage!.InputTokens.Should().Be(312);
+        response.Usage.OutputTokens.Should().Be(48);
+    }
+
+    [TestMethod]
+    public void TypeSafeQuestion_FactoriesEnforceCriteriaShapeAndLimits()
+    {
+        var noul = TypeSafeQuestion.Noul("Is it a refund request?", whenTrue: "Customer asks for money back");
+        noul.Type.Should().Be(TypeSafeQuestionType.Noul);
+        noul.Criteria!.Value.Value1.Should().Equal(new Dictionary<string, string?> { ["true"] = "Customer asks for money back" });
+
+        var score = TypeSafeQuestion.Score("How urgent?", "low", "high");
+        score.Criteria!.Value.Value2.Should().Equal("low", "high");
+
+        FluentActions.Invoking(() => TypeSafeQuestion.Score("How urgent?", "only"))
+            .Should().Throw<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => TypeSafeQuestion.Score("How urgent?", Enumerable.Range(0, 11).Select(i => $"level {i}").ToArray()))
+            .Should().Throw<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => TypeSafeQuestion.Choice("Which team?", new Dictionary<string, string?>()))
+            .Should().Throw<ArgumentOutOfRangeException>();
+    }
+
     private sealed class RecordingHandler(HttpResponseMessage response) : HttpMessageHandler
     {
         public HttpMethod? Method { get; private set; }
